@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Day21
+namespace Day21Hard
 {
     class Program
     {
@@ -33,25 +33,25 @@ namespace Day21
                     new[]{80,     0 ,      3},
                 };
 
-            int min = int.MaxValue;
-            for(int w=0; w<weapons.Length; w++)
+            int max = 0;
+            for (int w = 0; w < weapons.Length; w++)
             {
                 for (int a = 0; a < armor.Length; a++)
                 {
                     for (int r = 0; r < rings.Length; r++)
                     {
-                        if(Simulate(weapons[w][1] + armor[a][1] + rings[r][1], weapons[w][2] + armor[a][2] + rings[r][2]))
+                        if (!Simulate(weapons[w][1] + armor[a][1] + rings[r][1], weapons[w][2] + armor[a][2] + rings[r][2]))
                         {
-                            var cost =  weapons[w][0] + armor[a][0] + rings[r][0];
-                            if(cost < min)
-                                min = cost;
+                            var cost = weapons[w][0] + armor[a][0] + rings[r][0];
+                            if (cost > max)
+                                max = cost;
                         }
 
-                        if (Simulate(weapons[w][1] + rings[r][1], weapons[w][2] + rings[r][2]))
+                        if (!Simulate(weapons[w][1] + rings[r][1], weapons[w][2] + rings[r][2]))
                         {
                             var cost = weapons[w][0] + rings[r][0];
-                            if (cost < min)
-                                min = cost;
+                            if (cost > max)
+                                max = cost;
                         }
 
                         for (int r2 = 0; r2 < rings.Length; r2++)
@@ -59,11 +59,11 @@ namespace Day21
                             if (r2 == r)
                                 continue;
 
-                            if (Simulate(weapons[w][1] + armor[a][1] + rings[r][1] + +rings[r2][1], weapons[w][2] + armor[a][2] + rings[r][2] + rings[r2][2]))
+                            if (!Simulate(weapons[w][1] + armor[a][1] + rings[r][1] + +rings[r2][1], weapons[w][2] + armor[a][2] + rings[r][2] + rings[r2][2]))
                             {
                                 var cost = weapons[w][0] + armor[a][0] + rings[r][0] + rings[r2][0];
-                                if (cost < min)
-                                    min = cost;
+                                if (cost > max)
+                                    max = cost;
                             }
                         }
 
@@ -72,25 +72,25 @@ namespace Day21
                             if (r2 == r)
                                 continue;
 
-                            if (Simulate(weapons[w][1] + rings[r][1] + +rings[r2][1], weapons[w][2] + rings[r][2] + rings[r2][2]))
+                            if (!Simulate(weapons[w][1] + rings[r][1] + +rings[r2][1], weapons[w][2] + rings[r][2] + rings[r2][2]))
                             {
                                 var cost = weapons[w][0] + rings[r][0] + rings[r2][0];
-                                if (cost < min)
-                                    min = cost;
+                                if (cost > max)
+                                    max = cost;
                             }
                         }
                     }
 
-                    if (Simulate(weapons[w][1] + armor[a][1], weapons[w][2] + armor[a][2]))
+                    if (!Simulate(weapons[w][1] + armor[a][1], weapons[w][2] + armor[a][2]))
                     {
                         var cost = weapons[w][0] + armor[a][0];
-                        if (cost < min)
-                            min = cost;
+                        if (cost > max)
+                            max = cost;
                     }
                 }
             }
 
-            Console.WriteLine(min);
+            Console.WriteLine(max);
             Console.Read();
         }
 
